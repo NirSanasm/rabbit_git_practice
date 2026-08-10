@@ -1,7 +1,6 @@
 # app/api/orders.py
 import uuid
 
-from aio_pika import ExchangeType
 from fastapi import APIRouter, status
 from pydantic import BaseModel
 
