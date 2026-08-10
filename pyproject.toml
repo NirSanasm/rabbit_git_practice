@@ -1,0 +1,9 @@
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+# If mypy complains about third-party libraries (like Stripe or SQLAlchemy) missing types, ignore them for now:
+ignore_missing_imports = true
