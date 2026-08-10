@@ -1,8 +1,10 @@
 # app/api/orders.py
 import uuid
+
+from aio_pika import ExchangeType
 from fastapi import APIRouter, status
 from pydantic import BaseModel
-from aio_pika import ExchangeType
+
 from app.messaging.publisher import publish_message
 
 router = APIRouter(prefix="/orders", tags=["orders"])

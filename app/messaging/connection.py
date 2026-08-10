@@ -1,5 +1,7 @@
-from aio_pika import connect_robust, RobustConnection
+from aio_pika import RobustConnection, connect_robust
+
 from app.config import settings
+
 
 class RabbitMQ:
     connection : RobustConnection | None = None

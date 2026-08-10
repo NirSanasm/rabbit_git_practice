@@ -1,7 +1,9 @@
 # app/consumers/order_consumer.py
 import asyncio
 import json
+
 from aio_pika import ExchangeType, IncomingMessage
+
 from app.messaging.connection import RabbitMQ
 
 

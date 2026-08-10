@@ -1,8 +1,10 @@
 # app/main.py
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
-from app.messaging.connection import RabbitMQ
+
 from app.api.orders import router as orders_router
+from app.messaging.connection import RabbitMQ
 
 
 @asynccontextmanager

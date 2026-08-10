@@ -1,7 +1,10 @@
-import json 
-import uuid 
-from aio_pika import Message, DeliveryMode, ExchangeType
+import json
+import uuid
+
+from aio_pika import DeliveryMode, ExchangeType, Message
+
 from app.messaging.connection import RabbitMQ
+
 
 async def publish_message(exchange_name:str, routing_key:str, payload:dict, exchange_type:ExchangeType = ExchangeType.DIRECT, message_id:str| None = None):
     channel = await RabbitMQ.get_channel()
