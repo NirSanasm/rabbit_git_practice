@@ -11,7 +11,7 @@ async def lifespan(app: FastAPI):
     await RabbitMQ.connect()
     yield
     # Close cleanly on shutdown
-    await RabbitMQ.close()
+    await RabbitMQ.close_connection()
 
 
 app = FastAPI(title="Ecom API", lifespan=lifespan)
