@@ -26,7 +26,7 @@ class PaymentOut(BaseModel):
     payment_status: str
 
 @router.post('/', response_model=OrderOut, status_code=status.HTTP_202_ACCEPTED)
-async def create_order(order: OrderIn):
+async def create_order(order: OrderIn)-> OrderOut:
     order_id = str(uuid.uuid4())
     order_out = OrderOut(order_id=order_id, status="created")
     payload = order.dict()
@@ -40,7 +40,7 @@ async def create_order(order: OrderIn):
 
 
 @router.post('/payment', response_model= PaymentOut, status_code=status.HTTP_202_ACCEPTED)
-async def process_payment(order: OrderIn):
+async def process_payment(order: OrderIn) -> PaymentOut:
     order_id = str(uuid.uuid4())
     payment = PaymentOut(order_id=order_id, status="processed", payment_status='success')
     payload = order.dict()

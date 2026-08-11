@@ -2,12 +2,13 @@
 import asyncio
 import json
 
-from aio_pika import ExchangeType, IncomingMessage
+from aio_pika import ExchangeType
+from aio_pika.abc import AbstractIncomingMessage
 
 from app.messaging.connection import RabbitMQ
 
 
-async def process_payment(message: IncomingMessage):
+async def process_payment(message: AbstractIncomingMessage) -> None:
     async with message.process():
         body = json.loads(message.body.decode())
         print(body)
@@ -15,7 +16,7 @@ async def process_payment(message: IncomingMessage):
         await asyncio.sleep(7)
         print(f"✅ Payment for order {body['order_id']} processed")
 
-async def process_order(message: IncomingMessage):
+async def process_order(message: AbstractIncomingMessage) -> None:
     async with message.process():
         body = json.loads(message.body.decode())
         print(body)
@@ -27,7 +28,7 @@ async def process_order(message: IncomingMessage):
         print(f"✅ Order {body['order_id']} processed")
 
 
-async def main():
+async def main() -> None:
     await RabbitMQ.connect()
     order_channel = await RabbitMQ.get_channel()
     payment_channel = await RabbitMQ.get_channel()

@@ -1,5 +1,6 @@
 # app/main.py
 from contextlib import asynccontextmanager
+from typing import AsyncGenerator
 
 from fastapi import FastAPI
 
@@ -8,7 +9,7 @@ from app.messaging.connection import RabbitMQ
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     # Warm up the connection on startup
     await RabbitMQ.connect()
     yield
