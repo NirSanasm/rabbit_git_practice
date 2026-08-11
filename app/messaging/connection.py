@@ -1,5 +1,5 @@
 import aio_pika
-from aio_pika.abc import AbstractRobustConnection, AbstractChannel
+from aio_pika.abc import AbstractChannel, AbstractRobustConnection
 
 from app.config import settings
 
