@@ -17,5 +17,5 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     await RabbitMQ.close_connection()
 
 
-app = FastAPI(title="Ecom API", lifespan=lifespan)
+app = FastAPI(title="Ecom AI API", lifespan=lifespan)
 app.include_router(orders_router)

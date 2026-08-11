@@ -2,3 +2,4 @@ fastapi
 uvicorn[standard]
 aio-pika
 httpx
+pydantic-settings
