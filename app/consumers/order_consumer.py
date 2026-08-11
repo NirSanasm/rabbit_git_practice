@@ -47,7 +47,7 @@ async def main() -> None:
 
     await order_queue.consume(process_order)
     await payment_queue.consume(process_payment)
-    print("🚀 Consumer waiting for orders on queue 'order_processing and payment on payment_processing'...")
+    print("Consumer waiting for orders on queue 'order_processing and payment on payment_processing'...")
 
     await asyncio.Future()
 
