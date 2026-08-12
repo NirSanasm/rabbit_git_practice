@@ -2,6 +2,19 @@
 version: "3.8"
 
 services:
+
+  fastapiapp:
+    build: .
+    container_name: rabit_git_action
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      - RABBITMQ_URL=amqp://admin:admin@rabbitmq:5672/
+    depends_on:
+      - rabbitmq
   rabbitmq:
     image: rabbitmq:3.13-management
     container_name: ecom-rabbit
