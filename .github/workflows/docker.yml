@@ -8,7 +8,6 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     
-    # Required permissions to push to GitHub Container Registry
     permissions:
       contents: read
       packages: write
@@ -24,17 +23,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Generates lowercase tags for commit SHA and 'latest' automatically
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=sha,format=long
+            type=raw,value=latest
+
+      # Single build and push step using generated tags
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          # This tags the image with the Git commit SHA (e.g., ghcr.io/yourname/repo:abc123)
-          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
-
-      - name: Also tag as 'latest'
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
