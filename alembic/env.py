@@ -1,11 +1,11 @@
 import os
 from logging.config import fileConfig
 from pathlib import Path
+
 from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
-
 
 Basedir = Path(__file__).resolve().parent.parent
 ENV_PATH = Basedir / "app" / ".env"
