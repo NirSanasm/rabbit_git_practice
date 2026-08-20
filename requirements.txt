@@ -5,3 +5,4 @@ httpx
 pydantic-settings
 alembic
 psycopg2-binary
+requests==2.19.0
