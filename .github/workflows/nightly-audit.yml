@@ -1,0 +1,27 @@
+name: Nightly Security Audit
+
+on:
+  schedule:
+    # Runs at 00:00 UTC every day
+    - cron: '0 0 * * *'
+  # Allows you to run this manually from the Actions tab!
+  workflow_dispatch: 
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pip-audit
+        run: pip install pip-audit
+
+      - name: Run audit
+        # Scans requirements.txt against known vulnerability databases
+        run: pip-audit -r requirements.txt
