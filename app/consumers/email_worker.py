@@ -26,13 +26,24 @@ async def send_email(message: IncomingMessage) -> None:
 
     except Exception as e:
         print(f"Failed to send email: {e}")
-        message['x-retry-count'] = message.headers.get('x-retry-count', 0) + 1
-        if message['x-retry-count'] > 4:
-            print(f"Max retry attempts reached for message {message.message_id}. Sending to dead-letter queue.")
-            await message.reject(requeue=False)
-        print(f" Sending to retry queue ...")
-        await message.nack(requeue=False)
+        
+        # RabbitMQ automatically tracks deaths in the 'x-death' header
+        deaths = message.headers.get('x-death', [])
+        retry_count = 0
+        
+        # Find the death record specifically for our main queue
+        for death in deaths:
+            if death.get('queue') == 'email_queue':
+                retry_count = death.get('count', 0)
+                break
+        if retry_count >= 4:
+            print(f"Max retries reached for {message.message_id}. Burying message.")
+            await message.ack() 
+        else: 
+            print(f"Retry {retry_count + 1}/4. Sending to retry queue via DLX...")
+            await message.nack(requeue=False)
 
+            
 async def main() -> None:
     await RabbitMQ.connect()
     channel = await RabbitMQ.get_channel()
