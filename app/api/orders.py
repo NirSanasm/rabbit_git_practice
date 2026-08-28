@@ -32,7 +32,7 @@ async def create_order(order: OrderIn)-> OrderOut:
     payload = order.dict()
     payload["order_id"] = order_id
     await publish_message(
-        exchange_name="orders",
+        exchange_name="ecom_events",
         routing_key="order.created",
         payload=payload
     )
@@ -52,3 +52,18 @@ async def process_payment(order: OrderIn) -> PaymentOut:
     )
 
     return payment
+
+
+
+class CancelOut(BaseModel):
+    order_id: str
+    status: str
+
+@router.post("/{order_id}/cancel", response_model=CancelOut)
+async def cancel_order(order_id: str):
+    await publish_message(
+        exchange_name="ecom_events",
+        routing_key="order.cancelled",  
+        payload={"order_id": order_id, "reason": "customer_request"},
+    )
+    return CancelOut(order_id=order_id, status="cancellation_queued")
